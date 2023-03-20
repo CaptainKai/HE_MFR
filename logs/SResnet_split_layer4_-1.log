@@ -1,0 +1,30 @@
+2021-04-29 00:45:51,953: [('name', 'SResnet_split_layer4'), ('backbone_model_name', 'SimpleResnet_split_64'), ('classify_model_name', 'MarginCosineProduct'), ('resume_net_model', None), ('resume_net_classifier', None), ('no_cuda', False), ('gpu_num', 1), ('log_interval', 100), ('log_path', './logs/SResnet_split_layer4.log'), ('log_pic_path', './logs/pic/SResnet_split_layer4/'), ('save_path', 'snapshot/SResnet_split_layer4/'), ('lmdb_path', '/home/ubuntu/data4/lk/data/lmdb_mask_augu_full'), ('batch_size', 384), ('datanum', 3923399), ('num_class', 86876), ('lmdb_workers', 4), ('num_workers', 4), ('start_epoch', 1), ('max_epoch', 38), ('lr', 0.1), ('base', 'epoch'), ('step_size', [10, 20, 30, 40, 50, 60]), ('momentum', 0.9), ('gama', 0.1), ('weight_decay', 0.0005), ('rank', -1), ('dist_url', 'env://'), ('world_size', -1), ('gpu', None), ('dist_backend', 'nccl'), ('distributed', False), ('master_port', 32345), ('multiprocessing_distributed', False), ('SEED', 1337), ('local_rank', -1)]
+2021-04-29 00:45:57,082: Use DP
+2021-04-29 00:47:07,610: time cost, forward:0.03303721938470398, backward:0.32024620277713045, data cost:0.17835079299079049 
+2021-04-29 00:47:07,610: ============================================================
+2021-04-29 00:47:07,610: Epoch 1/38 Batch 100/10217 eta: 3 days, 3:51:27.476580	Training Loss2 21.8722 (26.2238)	Training Loss3 41.7858 (49.0016)	Training Total_Loss 63.6580 (75.2254)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.000)	
+2021-04-29 00:47:07,610: ============================================================
+2021-04-29 00:48:14,690: time cost, forward:0.03049634689062684, backward:0.3151404534153004, data cost:0.16548198671197173 
+2021-04-29 00:48:14,690: ============================================================
+2021-04-29 00:48:14,691: Epoch 1/38 Batch 200/10217 eta: 3 days, 0:18:22.803446	Training Loss2 21.9288 (24.0395)	Training Loss3 43.7444 (46.2110)	Training Total_Loss 65.6733 (70.2505)	Training Prec@1_up 0.000 (0.001)	Training Prec@1_down 0.000 (0.000)	
+2021-04-29 00:48:14,691: ============================================================
+2021-04-29 00:49:22,431: time cost, forward:0.029756500569474337, backward:0.31459098356623316, data cost:0.16216285810821432 
+2021-04-29 00:49:22,432: ============================================================
+2021-04-29 00:49:22,432: Epoch 1/38 Batch 300/10217 eta: 3 days, 1:00:00.925158	Training Loss2 31.8281 (24.2004)	Training Loss3 42.6342 (45.4614)	Training Total_Loss 74.4623 (69.6618)	Training Prec@1_up 0.000 (0.001)	Training Prec@1_down 0.000 (0.000)	
+2021-04-29 00:49:22,432: ============================================================
+2021-04-29 00:50:30,852: time cost, forward:0.028911132262762925, backward:0.31518298282957913, data cost:0.1612101802252289 
+2021-04-29 00:50:30,853: ============================================================
+2021-04-29 00:50:30,853: Epoch 1/38 Batch 400/10217 eta: 3 days, 1:42:49.064048	Training Loss2 23.2048 (26.1497)	Training Loss3 86.0926 (46.4202)	Training Total_Loss 109.2974 (72.5699)	Training Prec@1_up 0.000 (0.001)	Training Prec@1_down 0.000 (0.001)	
+2021-04-29 00:50:30,853: ============================================================
+2021-04-29 00:51:36,459: time cost, forward:0.0283825364045963, backward:0.3133208445891111, data cost:0.15933038763149468 
+2021-04-29 00:51:36,460: ============================================================
+2021-04-29 00:51:36,460: Epoch 1/38 Batch 500/10217 eta: 2 days, 22:39:49.977158	Training Loss2 nan (nan)	Training Loss3 nan (nan)	Training Total_Loss nan (nan)	Training Prec@1_up 0.000 (0.001)	Training Prec@1_down 0.000 (0.001)	
+2021-04-29 00:51:36,461: ============================================================
+2021-04-29 00:52:42,059: time cost, forward:0.028259694476756508, backward:0.3121245150176034, data cost:0.1580902654459958 
+2021-04-29 00:52:42,059: ============================================================
+2021-04-29 00:52:42,060: Epoch 1/38 Batch 600/10217 eta: 2 days, 22:38:13.622918	Training Loss2 nan (nan)	Training Loss3 nan (nan)	Training Total_Loss nan (nan)	Training Prec@1_up 0.000 (0.000)	Training Prec@1_down 0.000 (0.000)	
+2021-04-29 00:52:42,060: ============================================================
+2021-04-29 00:53:47,644: time cost, forward:0.028026614236899883, backward:0.31127235920132484, data cost:0.1571991873401429 
+2021-04-29 00:53:47,645: ============================================================
+2021-04-29 00:53:47,645: Epoch 1/38 Batch 700/10217 eta: 2 days, 22:36:14.086998	Training Loss2 nan (nan)	Training Loss3 nan (nan)	Training Total_Loss nan (nan)	Training Prec@1_up 0.000 (0.000)	Training Prec@1_down 0.000 (0.000)	
+2021-04-29 00:53:47,645: ============================================================

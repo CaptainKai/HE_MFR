@@ -1,0 +1,506 @@
+2022-07-23 09:30:43,583: ('name', 'resnet-50-arc')
+2022-07-23 09:30:43,583: ('description', '双分支（缩短到仅多分出来一个fc），特征不裁剪，两个分支均进行正常人脸训练,lr0.1尝试一下，0.05不收敛')
+2022-07-23 09:30:43,606: ('data_settings', {'training': {'batch_size': 512, 'num_workers': 4, 'num_class': 86876, 'loader_settings': {'lmdb_path': '/home/ubuntu/data4/lk/data/lmdb_mask_augu_full', 'num': 3923399, 'max_reader': 4, 'augu_paral': False, 'ldm68': False, 'augu_rate': 0, 'preproc': None, 'shuffle': True}}})
+2022-07-23 09:30:43,606: ('common_settings', {'backbone': {'num': 1, 'settings': [{'backbone_model_name': 'resnet50', 'args': {'input_size': [112, 112], 'fc_num': 2}, 'resume_net_model': None}]}, 'classifier': {'num': 2, 'settings': [{'classifier_model_name': 'ArcFace', 'args': {'in_features': 256, 'out_features': 86876}, 'resume_net_classifier': None, 'alpha': 0.5}, {'classifier_model_name': 'ArcFace', 'args': {'in_features': 256, 'out_features': 86876}, 'resume_net_classifier': None, 'alpha': 0.5}]}})
+2022-07-23 09:30:43,606: ('gpu_settings', {'no_cuda': False, 'gpu_num': 2})
+2022-07-23 09:30:43,606: ('log_settings', {'training': {'log_path': './logs/res_50_fc_bothPure_seperate_lr0.1.log', 'log_pic_path': './logs/pic/res_50_fc_bothPure_seperate_lr0.1/', 'save_path': 'snapshot/res_50_fc_bothPure_seperate_lr0.1/', 'log_interval': 100}, 'testing': {'result_path': './result/result.txt'}})
+2022-07-23 09:30:43,606: ('other_settings', {'resume': False, 'resume_net_optimizer': None, 'start_epoch': 1, 'max_epoch': 25, 'lr': 0.1, 'base': 'epoch', 'step_size': [10, 20, 30], 'momentum': 0.9, 'gama': 0.1, 'weight_decay': 0.0005})
+2022-07-23 09:30:43,606: ('environ_settings', {'rank': -1, 'dist_url': 'env://', 'world_size': -1, 'gpu': None, 'dist_backend': 'nccl', 'distributed': False, 'master_port': 22345, 'multiprocessing_distributed': False, 'SEED': 1337})
+2022-07-23 09:30:43,607: ('local_rank', -1)
+2022-07-23 09:30:44,482: ResNet(
+  (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+  (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(inplace=True)
+  (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  (layer1): Sequential(
+    (0): Bottleneck(
+      (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (downsample): Sequential(
+        (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): Bottleneck(
+      (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (2): Bottleneck(
+      (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (layer2): Sequential(
+    (0): Bottleneck(
+      (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (downsample): Sequential(
+        (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): Bottleneck(
+      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (2): Bottleneck(
+      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (3): Bottleneck(
+      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (layer3): Sequential(
+    (0): Bottleneck(
+      (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (downsample): Sequential(
+        (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): Bottleneck(
+      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (2): Bottleneck(
+      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (3): Bottleneck(
+      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (4): Bottleneck(
+      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (5): Bottleneck(
+      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (layer4): Sequential(
+    (0): Bottleneck(
+      (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (downsample): Sequential(
+        (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): Bottleneck(
+      (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (2): Bottleneck(
+      (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (bn_o1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (dropout): Dropout(p=0, inplace=False)
+  (fc): Linear(in_features=32768, out_features=256, bias=True)
+  (fc_two): Linear(in_features=32768, out_features=256, bias=True)
+)
+2022-07-23 09:30:59,131: Use DP
+2022-07-23 09:31:03,011: CrossEntropyLoss()
+2022-07-23 09:31:03,011: LogSoftmax(dim=1)
+2022-07-23 09:31:03,011: NLLLoss()
+2022-07-23 09:31:03,011: <bound method Trainer.loss_func of <trainner.Trainer object at 0x7f9a98cbae10>>
+2022-07-23 09:31:48,480: time cost, forward:0.13719388451239076, backward:0.12318788393579348, data cost:0.19610708410089667 
+2022-07-23 09:31:48,480: ============================================================
+2022-07-23 09:31:48,480: Epoch 1/25 Batch 100/7662 eta: 1 day, 0:10:40.031016	Training Loss1 43.6305 (45.2648)	Training Loss2 43.6917 (45.2743)	Training Total_Loss 43.6611 (45.2695)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.000)	
+2022-07-23 09:31:48,480: ============================================================
+2022-07-23 09:32:30,614: time cost, forward:0.13223110491306939, backward:0.11597877051962081, data cost:0.19018602011790828 
+2022-07-23 09:32:30,615: ============================================================
+2022-07-23 09:32:30,615: Epoch 1/25 Batch 200/7662 eta: 22:23:45.078668	Training Loss1 43.0524 (44.2560)	Training Loss2 43.1338 (44.2608)	Training Total_Loss 43.0931 (44.2584)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.000)	
+2022-07-23 09:32:30,615: ============================================================
+2022-07-23 09:33:12,825: time cost, forward:0.13059061905213423, backward:0.11367532321840625, data cost:0.1884110699529233 
+2022-07-23 09:33:12,919: ============================================================
+2022-07-23 09:33:12,919: Epoch 1/25 Batch 300/7662 eta: 22:28:27.263325	Training Loss1 42.8832 (43.8251)	Training Loss2 42.9592 (43.8256)	Training Total_Loss 42.9212 (43.8254)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.001)	
+2022-07-23 09:33:12,919: ============================================================
+2022-07-23 09:33:55,218: time cost, forward:0.12983981469520053, backward:0.11258908620753084, data cost:0.1878348508275541 
+2022-07-23 09:33:55,218: ============================================================
+2022-07-23 09:33:55,219: Epoch 1/25 Batch 400/7662 eta: 22:27:35.722622	Training Loss1 42.8725 (43.5892)	Training Loss2 42.8480 (43.5872)	Training Total_Loss 42.8603 (43.5882)	Training Prec@1_up 0.000 (0.001)	Training Prec@1_down 0.000 (0.000)	
+2022-07-23 09:33:55,219: ============================================================
+2022-07-23 09:34:37,533: time cost, forward:0.12940384773070923, backward:0.11194919727608292, data cost:0.1873259090469452 
+2022-07-23 09:34:37,534: ============================================================
+2022-07-23 09:34:37,534: Epoch 1/25 Batch 500/7662 eta: 22:27:24.155882	Training Loss1 42.8739 (43.4444)	Training Loss2 42.9276 (43.4404)	Training Total_Loss 42.9007 (43.4424)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.002)	
+2022-07-23 09:34:37,534: ============================================================
+2022-07-23 09:35:19,827: time cost, forward:0.12911731134073962, backward:0.11153730128165676, data cost:0.1869302436784034 
+2022-07-23 09:35:19,827: ============================================================
+2022-07-23 09:35:19,828: Epoch 1/25 Batch 600/7662 eta: 22:25:59.970801	Training Loss1 42.9382 (43.3492)	Training Loss2 42.8910 (43.3445)	Training Total_Loss 42.9146 (43.3468)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.002)	
+2022-07-23 09:35:19,828: ============================================================
+2022-07-23 09:36:02,131: time cost, forward:0.12891549852614068, backward:0.11125775399978921, data cost:0.18664313795228885 
+2022-07-23 09:36:02,131: ============================================================
+2022-07-23 09:36:02,131: Epoch 1/25 Batch 700/7662 eta: 22:25:36.728654	Training Loss1 42.9299 (43.2823)	Training Loss2 42.9061 (43.2767)	Training Total_Loss 42.9180 (43.2795)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:36:02,131: ============================================================
+2022-07-23 09:36:44,430: time cost, forward:0.1287577587910677, backward:0.11104190215300559, data cost:0.18643631535268695 
+2022-07-23 09:36:44,431: ============================================================
+2022-07-23 09:36:44,431: Epoch 1/25 Batch 800/7662 eta: 22:24:47.114432	Training Loss1 42.9025 (43.2339)	Training Loss2 42.9302 (43.2275)	Training Total_Loss 42.9163 (43.2307)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:36:44,431: ============================================================
+2022-07-23 09:37:26,784: time cost, forward:0.12863861387377984, backward:0.110913112245757, data cost:0.1862880207672798 
+2022-07-23 09:37:26,785: ============================================================
+2022-07-23 09:37:26,786: Epoch 1/25 Batch 900/7662 eta: 22:25:49.567447	Training Loss1 42.8515 (43.1964)	Training Loss2 42.8716 (43.1892)	Training Total_Loss 42.8615 (43.1928)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:37:26,786: ============================================================
+2022-07-23 09:38:09,084: time cost, forward:0.1285593881979361, backward:0.11076750196852125, data cost:0.18614228494890458 
+2022-07-23 09:38:09,084: ============================================================
+2022-07-23 09:38:09,085: Epoch 1/25 Batch 1000/7662 eta: 22:23:21.982568	Training Loss1 42.9430 (43.1661)	Training Loss2 42.9361 (43.1582)	Training Total_Loss 42.9395 (43.1622)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:38:09,085: ============================================================
+2022-07-23 09:38:51,366: time cost, forward:0.12848886193960118, backward:0.11064562133705758, data cost:0.18601866848800702 
+2022-07-23 09:38:51,367: ============================================================
+2022-07-23 09:38:51,367: Epoch 1/25 Batch 1100/7662 eta: 22:22:06.656771	Training Loss1 42.9160 (43.1370)	Training Loss2 42.8885 (43.1286)	Training Total_Loss 42.9023 (43.1328)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.002)	
+2022-07-23 09:38:51,367: ============================================================
+2022-07-23 09:39:33,567: time cost, forward:0.12842074227989267, backward:0.11054864120642477, data cost:0.18585203487342153 
+2022-07-23 09:39:33,568: ============================================================
+2022-07-23 09:39:33,568: Epoch 1/25 Batch 1200/7662 eta: 22:18:49.746356	Training Loss1 42.6506 (43.1081)	Training Loss2 42.6197 (43.0990)	Training Total_Loss 42.6351 (43.1035)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:39:33,568: ============================================================
+2022-07-23 09:40:15,847: time cost, forward:0.1283625992928403, backward:0.11047138224389573, data cost:0.1857689408910926 
+2022-07-23 09:40:15,847: ============================================================
+2022-07-23 09:40:15,848: Epoch 1/25 Batch 1300/7662 eta: 22:20:37.587051	Training Loss1 42.5488 (43.0750)	Training Loss2 42.5051 (43.0650)	Training Total_Loss 42.5270 (43.0700)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:40:15,848: ============================================================
+2022-07-23 09:40:58,151: time cost, forward:0.12830449718505335, backward:0.11040723400511343, data cost:0.18571921857107188 
+2022-07-23 09:40:58,152: ============================================================
+2022-07-23 09:40:58,152: Epoch 1/25 Batch 1400/7662 eta: 22:20:42.004290	Training Loss1 42.4256 (43.0347)	Training Loss2 42.4143 (43.0237)	Training Total_Loss 42.4199 (43.0292)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:40:58,152: ============================================================
+2022-07-23 09:41:40,445: time cost, forward:0.1282493920227621, backward:0.11034350430194023, data cost:0.1856829132375278 
+2022-07-23 09:41:40,446: ============================================================
+2022-07-23 09:41:40,446: Epoch 1/25 Batch 1500/7662 eta: 22:19:39.974023	Training Loss1 42.1210 (42.9828)	Training Loss2 42.1339 (42.9709)	Training Total_Loss 42.1274 (42.9768)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.002)	
+2022-07-23 09:41:40,446: ============================================================
+2022-07-23 09:42:22,780: time cost, forward:0.12821246520514187, backward:0.11028417130423158, data cost:0.18567111150706986 
+2022-07-23 09:42:22,781: ============================================================
+2022-07-23 09:42:22,781: Epoch 1/25 Batch 1600/7662 eta: 22:20:16.345570	Training Loss1 41.6140 (42.9153)	Training Loss2 41.6027 (42.9023)	Training Total_Loss 41.6083 (42.9088)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.002)	
+2022-07-23 09:42:22,781: ============================================================
+2022-07-23 09:43:05,149: time cost, forward:0.12819429535666516, backward:0.11023419053502613, data cost:0.18566267752801763 
+2022-07-23 09:43:05,150: ============================================================
+2022-07-23 09:43:05,150: Epoch 1/25 Batch 1700/7662 eta: 22:20:37.727495	Training Loss1 41.1002 (42.8256)	Training Loss2 41.0675 (42.8115)	Training Total_Loss 41.0838 (42.8185)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.002)	
+2022-07-23 09:43:05,150: ============================================================
+2022-07-23 09:43:47,529: time cost, forward:0.12816628301852673, backward:0.11019998593354238, data cost:0.18566391360700096 
+2022-07-23 09:43:47,530: ============================================================
+2022-07-23 09:43:47,530: Epoch 1/25 Batch 1800/7662 eta: 22:20:16.132002	Training Loss1 40.3252 (42.7068)	Training Loss2 40.3226 (42.6913)	Training Total_Loss 40.3239 (42.6991)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.002)	
+2022-07-23 09:43:47,530: ============================================================
+2022-07-23 09:44:29,919: time cost, forward:0.12814390577725074, backward:0.11017042602470764, data cost:0.18566660845888608 
+2022-07-23 09:44:29,919: ============================================================
+2022-07-23 09:44:29,919: Epoch 1/25 Batch 1900/7662 eta: 22:19:52.168790	Training Loss1 39.2786 (42.5513)	Training Loss2 39.2194 (42.5344)	Training Total_Loss 39.2490 (42.5428)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:44:29,919: ============================================================
+2022-07-23 09:45:12,378: time cost, forward:0.1281238462162829, backward:0.11016012168395752, data cost:0.18568441091387675 
+2022-07-23 09:45:12,379: ============================================================
+2022-07-23 09:45:12,379: Epoch 1/25 Batch 2000/7662 eta: 22:21:23.389471	Training Loss1 37.6576 (42.3490)	Training Loss2 37.6176 (42.3304)	Training Total_Loss 37.6376 (42.3397)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:45:12,380: ============================================================
+2022-07-23 09:45:54,819: time cost, forward:0.12811372426647752, backward:0.11013273195518432, data cost:0.18570161865347054 
+2022-07-23 09:45:54,819: ============================================================
+2022-07-23 09:45:54,819: Epoch 1/25 Batch 2100/7662 eta: 22:20:03.153565	Training Loss1 35.9063 (42.0877)	Training Loss2 35.8456 (42.0674)	Training Total_Loss 35.8760 (42.0775)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:45:54,820: ============================================================
+2022-07-23 09:46:37,323: time cost, forward:0.1281161110961692, backward:0.11011695222130359, data cost:0.18572562724257013 
+2022-07-23 09:46:37,323: ============================================================
+2022-07-23 09:46:37,323: Epoch 1/25 Batch 2200/7662 eta: 22:21:21.877154	Training Loss1 33.5374 (41.7544)	Training Loss2 33.4808 (41.7322)	Training Total_Loss 33.5091 (41.7433)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:46:37,324: ============================================================
+2022-07-23 09:47:19,800: time cost, forward:0.12810643417205744, backward:0.11009714820168236, data cost:0.1857540532784547 
+2022-07-23 09:47:19,800: ============================================================
+2022-07-23 09:47:19,801: Epoch 1/25 Batch 2300/7662 eta: 22:19:48.238411	Training Loss1 30.5702 (41.3342)	Training Loss2 30.5002 (41.3100)	Training Total_Loss 30.5352 (41.3221)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:47:19,801: ============================================================
+2022-07-23 09:48:02,284: time cost, forward:0.12809945186409866, backward:0.11006926327459313, data cost:0.18579103351384713 
+2022-07-23 09:48:02,284: ============================================================
+2022-07-23 09:48:02,285: Epoch 1/25 Batch 2400/7662 eta: 22:19:19.081246	Training Loss1 26.9792 (40.8128)	Training Loss2 26.8995 (40.7864)	Training Total_Loss 26.9393 (40.7996)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:48:02,285: ============================================================
+2022-07-23 09:48:44,743: time cost, forward:0.12808310789983718, backward:0.11004893977244218, data cost:0.1858192438504943 
+2022-07-23 09:48:44,744: ============================================================
+2022-07-23 09:48:44,744: Epoch 1/25 Batch 2500/7662 eta: 22:17:49.953081	Training Loss1 22.7726 (40.1769)	Training Loss2 22.6830 (40.1481)	Training Total_Loss 22.7278 (40.1625)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:48:44,744: ============================================================
+2022-07-23 09:49:27,256: time cost, forward:0.12808073342144605, backward:0.11002914379908058, data cost:0.18585567879832768 
+2022-07-23 09:49:27,256: ============================================================
+2022-07-23 09:49:27,256: Epoch 1/25 Batch 2600/7662 eta: 22:18:47.323649	Training Loss1 26.0324 (39.4884)	Training Loss2 26.1887 (39.4640)	Training Total_Loss 26.1105 (39.4762)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:49:27,256: ============================================================
+2022-07-23 09:50:09,709: time cost, forward:0.12807902392302234, backward:0.11000806174926644, data cost:0.18586952644791943 
+2022-07-23 09:50:09,710: ============================================================
+2022-07-23 09:50:09,711: Epoch 1/25 Batch 2700/7662 eta: 22:16:14.915196	Training Loss1 26.1616 (38.9995)	Training Loss2 26.1853 (38.9758)	Training Total_Loss 26.1735 (38.9877)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.003)	
+2022-07-23 09:50:09,711: ============================================================
+2022-07-23 09:50:52,156: time cost, forward:0.1280701795021267, backward:0.10998860560557211, data cost:0.18588717787041753 
+2022-07-23 09:50:52,157: ============================================================
+2022-07-23 09:50:52,157: Epoch 1/25 Batch 2800/7662 eta: 22:15:18.812108	Training Loss1 26.0404 (38.5481)	Training Loss2 26.0061 (38.5252)	Training Total_Loss 26.0233 (38.5367)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.004)	
+2022-07-23 09:50:52,157: ============================================================
+2022-07-23 09:51:34,619: time cost, forward:0.12806157631559922, backward:0.10997611689296169, data cost:0.1859036079971245 
+2022-07-23 09:51:34,619: ============================================================
+2022-07-23 09:51:34,619: Epoch 1/25 Batch 2900/7662 eta: 22:15:05.056235	Training Loss1 26.7269 (38.1330)	Training Loss2 26.6401 (38.1109)	Training Total_Loss 26.6835 (38.1220)	Training Prec@1_up 0.000 (0.003)	Training Prec@1_down 0.000 (0.004)	
+2022-07-23 09:51:34,619: ============================================================
+2022-07-23 09:52:17,075: time cost, forward:0.12805646711605792, backward:0.10996337825753523, data cost:0.18591510800370856 
+2022-07-23 09:52:17,075: ============================================================
+2022-07-23 09:52:17,075: Epoch 1/25 Batch 3000/7662 eta: 22:14:11.008638	Training Loss1 26.5699 (37.7481)	Training Loss2 26.5573 (37.7267)	Training Total_Loss 26.5636 (37.7374)	Training Prec@1_up 0.000 (0.004)	Training Prec@1_down 0.000 (0.004)	
+2022-07-23 09:52:17,075: ============================================================
+2022-07-23 09:52:59,571: time cost, forward:0.1280623024684762, backward:0.10995022509705063, data cost:0.18592927778255713 
+2022-07-23 09:52:59,572: ============================================================
+2022-07-23 09:52:59,572: Epoch 1/25 Batch 3100/7662 eta: 22:14:45.700179	Training Loss1 26.3285 (37.3868)	Training Loss2 26.3155 (37.3658)	Training Total_Loss 26.3220 (37.3763)	Training Prec@1_up 0.000 (0.004)	Training Prec@1_down 0.000 (0.004)	
+2022-07-23 09:52:59,572: ============================================================
+2022-07-23 09:53:42,046: time cost, forward:0.12806061358331106, backward:0.10993696772034893, data cost:0.18594255951204386 
+2022-07-23 09:53:42,047: ============================================================
+2022-07-23 09:53:42,047: Epoch 1/25 Batch 3200/7662 eta: 22:13:21.890830	Training Loss1 26.2360 (37.0472)	Training Loss2 26.1762 (37.0267)	Training Total_Loss 26.2061 (37.0369)	Training Prec@1_up 0.000 (0.004)	Training Prec@1_down 0.000 (0.005)	
+2022-07-23 09:53:42,047: ============================================================
+2022-07-23 09:54:24,481: time cost, forward:0.12805533531977575, backward:0.10992159486431251, data cost:0.1859511641091598 
+2022-07-23 09:54:24,481: ============================================================
+2022-07-23 09:54:24,481: Epoch 1/25 Batch 3300/7662 eta: 22:11:23.558165	Training Loss1 26.4979 (36.7259)	Training Loss2 26.4716 (36.7059)	Training Total_Loss 26.4848 (36.7159)	Training Prec@1_up 0.000 (0.005)	Training Prec@1_down 0.000 (0.006)	
+2022-07-23 09:54:24,482: ============================================================
+2022-07-23 09:55:06,907: time cost, forward:0.1280497945593048, backward:0.1099073402879518, data cost:0.18595377071074226 
+2022-07-23 09:55:06,907: ============================================================
+2022-07-23 09:55:06,907: Epoch 1/25 Batch 3400/7662 eta: 22:10:24.328918	Training Loss1 26.3437 (36.4203)	Training Loss2 26.3143 (36.4010)	Training Total_Loss 26.3290 (36.4107)	Training Prec@1_up 0.000 (0.006)	Training Prec@1_down 0.000 (0.007)	
+2022-07-23 09:55:06,907: ============================================================
+2022-07-23 09:55:49,314: time cost, forward:0.1280473624341452, backward:0.10989143494777456, data cost:0.18595338072154002 
+2022-07-23 09:55:49,315: ============================================================
+2022-07-23 09:55:49,315: Epoch 1/25 Batch 3500/7662 eta: 22:09:08.146188	Training Loss1 26.2189 (36.1294)	Training Loss2 26.2584 (36.1106)	Training Total_Loss 26.2387 (36.1200)	Training Prec@1_up 0.000 (0.007)	Training Prec@1_down 0.000 (0.008)	
+2022-07-23 09:55:49,315: ============================================================
+2022-07-23 09:56:31,765: time cost, forward:0.12805105395103766, backward:0.10987978738094244, data cost:0.18595611681438678 
+2022-07-23 09:56:31,765: ============================================================
+2022-07-23 09:56:31,765: Epoch 1/25 Batch 3600/7662 eta: 22:09:46.042933	Training Loss1 25.9099 (35.8527)	Training Loss2 25.9640 (35.8345)	Training Total_Loss 25.9369 (35.8436)	Training Prec@1_up 0.195 (0.009)	Training Prec@1_down 0.195 (0.010)	
+2022-07-23 09:56:31,765: ============================================================
+2022-07-23 09:57:14,192: time cost, forward:0.12804199547727677, backward:0.10987323295364318, data cost:0.18595993225559668 
+2022-07-23 09:57:14,193: ============================================================
+2022-07-23 09:57:14,193: Epoch 1/25 Batch 3700/7662 eta: 22:08:20.635319	Training Loss1 26.2543 (35.5888)	Training Loss2 26.2195 (35.5711)	Training Total_Loss 26.2369 (35.5800)	Training Prec@1_up 0.000 (0.010)	Training Prec@1_down 0.000 (0.011)	
+2022-07-23 09:57:14,193: ============================================================
+2022-07-23 09:57:56,627: time cost, forward:0.1280359476922405, backward:0.10986578950884468, data cost:0.18596470296367215 
+2022-07-23 09:57:56,627: ============================================================
+2022-07-23 09:57:56,627: Epoch 1/25 Batch 3800/7662 eta: 22:07:51.157769	Training Loss1 25.8833 (35.3362)	Training Loss2 25.9098 (35.3193)	Training Total_Loss 25.8965 (35.3277)	Training Prec@1_up 0.000 (0.013)	Training Prec@1_down 0.000 (0.014)	
+2022-07-23 09:57:56,627: ============================================================
+2022-07-23 09:58:39,049: time cost, forward:0.12803131312888597, backward:0.10985483344196204, data cost:0.18596817536609667 
+2022-07-23 09:58:39,049: ============================================================
+2022-07-23 09:58:39,049: Epoch 1/25 Batch 3900/7662 eta: 22:06:45.313355	Training Loss1 25.6066 (35.0953)	Training Loss2 25.6603 (35.0789)	Training Total_Loss 25.6335 (35.0871)	Training Prec@1_up 0.000 (0.015)	Training Prec@1_down 0.000 (0.017)	
+2022-07-23 09:58:39,050: ============================================================
+2022-07-23 09:59:21,518: time cost, forward:0.12803363919287927, backward:0.10984614533941636, data cost:0.18597310929037267 
+2022-07-23 09:59:21,518: ============================================================
+2022-07-23 09:59:21,519: Epoch 1/25 Batch 4000/7662 eta: 22:07:31.322348	Training Loss1 26.1929 (34.8649)	Training Loss2 26.2047 (34.8489)	Training Total_Loss 26.1988 (34.8569)	Training Prec@1_up 0.000 (0.017)	Training Prec@1_down 0.000 (0.019)	
+2022-07-23 09:59:21,519: ============================================================
+2022-07-23 10:00:03,959: time cost, forward:0.1280320297365917, backward:0.1098383932934938, data cost:0.1859758273076069 
+2022-07-23 10:00:03,959: ============================================================
+2022-07-23 10:00:03,959: Epoch 1/25 Batch 4100/7662 eta: 22:05:55.336997	Training Loss1 25.6376 (34.6451)	Training Loss2 25.5863 (34.6294)	Training Total_Loss 25.6120 (34.6372)	Training Prec@1_up 0.000 (0.020)	Training Prec@1_down 0.000 (0.021)	
+2022-07-23 10:00:03,959: ============================================================
+2022-07-23 10:00:46,441: time cost, forward:0.12803392627177337, backward:0.10983508926086354, data cost:0.1859814061752868 
+2022-07-23 10:00:46,442: ============================================================
+2022-07-23 10:00:46,442: Epoch 1/25 Batch 4200/7662 eta: 22:06:31.554436	Training Loss1 25.9043 (34.4388)	Training Loss2 25.9705 (34.4235)	Training Total_Loss 25.9374 (34.4312)	Training Prec@1_up 0.000 (0.021)	Training Prec@1_down 0.000 (0.023)	
+2022-07-23 10:00:46,442: ============================================================
+2022-07-23 10:01:28,921: time cost, forward:0.12804387680012894, backward:0.10982621961151286, data cost:0.18598386170448716 
+2022-07-23 10:01:28,921: ============================================================
+2022-07-23 10:01:28,921: Epoch 1/25 Batch 4300/7662 eta: 22:05:43.506065	Training Loss1 25.6697 (34.2400)	Training Loss2 25.6770 (34.2251)	Training Total_Loss 25.6733 (34.2326)	Training Prec@1_up 0.000 (0.024)	Training Prec@1_down 0.000 (0.026)	
+2022-07-23 10:01:28,921: ============================================================
+2022-07-23 10:02:11,399: time cost, forward:0.12804996677354455, backward:0.10982097655866709, data cost:0.18598535522110599 
+2022-07-23 10:02:11,399: ============================================================
+2022-07-23 10:02:11,400: Epoch 1/25 Batch 4400/7662 eta: 22:04:58.520575	Training Loss1 25.8814 (34.0483)	Training Loss2 25.8980 (34.0337)	Training Total_Loss 25.8897 (34.0410)	Training Prec@1_up 0.195 (0.027)	Training Prec@1_down 0.195 (0.029)	
+2022-07-23 10:02:11,400: ============================================================
+2022-07-23 10:02:53,824: time cost, forward:0.12805321884833593, backward:0.10981188251803149, data cost:0.18598239017502682 
+2022-07-23 10:02:53,825: ============================================================
+2022-07-23 10:02:53,825: Epoch 1/25 Batch 4500/7662 eta: 22:02:36.998524	Training Loss1 27.7335 (33.8951)	Training Loss2 27.8414 (33.8737)	Training Total_Loss 27.7874 (33.8844)	Training Prec@1_up 0.000 (0.028)	Training Prec@1_down 0.000 (0.030)	
+2022-07-23 10:02:53,825: ============================================================
+2022-07-23 10:03:36,233: time cost, forward:0.12804961463735787, backward:0.10980418983504264, data cost:0.1859816909743589 
+2022-07-23 10:03:36,233: ============================================================
+2022-07-23 10:03:36,233: Epoch 1/25 Batch 4600/7662 eta: 22:01:22.897684	Training Loss1 27.9338 (33.7500)	Training Loss2 29.3111 (33.7368)	Training Total_Loss 28.6225 (33.7434)	Training Prec@1_up 0.000 (0.027)	Training Prec@1_down 0.000 (0.029)	
+2022-07-23 10:03:36,234: ============================================================
+2022-07-23 10:04:18,657: time cost, forward:0.1280477010435083, backward:0.10979604558707248, data cost:0.18598318394256871 
+2022-07-23 10:04:18,657: ============================================================
+2022-07-23 10:04:18,658: Epoch 1/25 Batch 4700/7662 eta: 22:01:09.959190	Training Loss1 26.6302 (33.6084)	Training Loss2 27.5073 (33.6129)	Training Total_Loss 27.0687 (33.6107)	Training Prec@1_up 0.000 (0.027)	Training Prec@1_down 0.000 (0.028)	
+2022-07-23 10:04:18,658: ============================================================
+2022-07-23 10:05:01,103: time cost, forward:0.1280537602006706, backward:0.10978825625391597, data cost:0.1859817558538171 
+2022-07-23 10:05:01,104: ============================================================
+2022-07-23 10:05:01,104: Epoch 1/25 Batch 4800/7662 eta: 22:01:08.915148	Training Loss1 30.3898 (33.4801)	Training Loss2 28.2773 (33.4924)	Training Total_Loss 29.3336 (33.4863)	Training Prec@1_up 0.000 (0.026)	Training Prec@1_down 0.000 (0.028)	
+2022-07-23 10:05:01,104: ============================================================
+2022-07-23 10:05:43,546: time cost, forward:0.12806125279956265, backward:0.10978196917516549, data cost:0.1859764889275013 
+2022-07-23 10:05:43,546: ============================================================
+2022-07-23 10:05:43,547: Epoch 1/25 Batch 4900/7662 eta: 22:00:19.690877	Training Loss1 28.7138 (33.3805)	Training Loss2 29.2317 (33.3781)	Training Total_Loss 28.9728 (33.3793)	Training Prec@1_up 0.000 (0.026)	Training Prec@1_down 0.000 (0.027)	
+2022-07-23 10:05:43,547: ============================================================
+2022-07-23 10:06:25,916: time cost, forward:0.12805522239358455, backward:0.10977460327423151, data cost:0.18597120612972998 
+2022-07-23 10:06:25,916: ============================================================
+2022-07-23 10:06:25,916: Epoch 1/25 Batch 5000/7662 eta: 21:57:20.904598	Training Loss1 26.4747 (33.2690)	Training Loss2 26.6091 (33.2677)	Training Total_Loss 26.5419 (33.2684)	Training Prec@1_up 0.000 (0.025)	Training Prec@1_down 0.000 (0.027)	
+2022-07-23 10:06:25,916: ============================================================
+2022-07-23 10:07:08,325: time cost, forward:0.12805628617573403, backward:0.10976732017994395, data cost:0.18596652120345947 
+2022-07-23 10:07:08,325: ============================================================
+2022-07-23 10:07:08,325: Epoch 1/25 Batch 5100/7662 eta: 21:57:52.043560	Training Loss1 26.6295 (33.1619)	Training Loss2 27.0479 (33.1665)	Training Total_Loss 26.8387 (33.1642)	Training Prec@1_up 0.000 (0.025)	Training Prec@1_down 0.000 (0.026)	
+2022-07-23 10:07:08,325: ============================================================
+2022-07-23 10:07:50,721: time cost, forward:0.12804848507152747, backward:0.10976579322748906, data cost:0.18596355776118187 
+2022-07-23 10:07:50,722: ============================================================
+2022-07-23 10:07:50,722: Epoch 1/25 Batch 5200/7662 eta: 21:56:46.591602	Training Loss1 27.0559 (33.0608)	Training Loss2 27.3468 (33.0719)	Training Total_Loss 27.2014 (33.0664)	Training Prec@1_up 0.000 (0.024)	Training Prec@1_down 0.000 (0.026)	
+2022-07-23 10:07:50,722: ============================================================
+2022-07-23 10:08:33,140: time cost, forward:0.12805067275825324, backward:0.10975792993350082, data cost:0.18595744736083478 
+2022-07-23 10:08:33,140: ============================================================
+2022-07-23 10:08:33,141: Epoch 1/25 Batch 5300/7662 eta: 21:56:45.251123	Training Loss1 28.8101 (32.9626)	Training Loss2 30.2596 (32.9856)	Training Total_Loss 29.5348 (32.9741)	Training Prec@1_up 0.000 (0.024)	Training Prec@1_down 0.000 (0.025)	
+2022-07-23 10:08:33,141: ============================================================
+2022-07-23 10:09:15,619: time cost, forward:0.12805471766500656, backward:0.10975760330776745, data cost:0.18595517624482155 
+2022-07-23 10:09:15,619: ============================================================
+2022-07-23 10:09:15,619: Epoch 1/25 Batch 5400/7662 eta: 21:57:54.284143	Training Loss1 28.9327 (32.8793)	Training Loss2 29.3081 (32.9138)	Training Total_Loss 29.1204 (32.8965)	Training Prec@1_up 0.000 (0.023)	Training Prec@1_down 0.000 (0.025)	
+2022-07-23 10:09:15,619: ============================================================
+2022-07-23 10:09:58,027: time cost, forward:0.12805539643814356, backward:0.10975131456972058, data cost:0.18595214721657488 
+2022-07-23 10:09:58,027: ============================================================
+2022-07-23 10:09:58,028: Epoch 1/25 Batch 5500/7662 eta: 21:55:01.458658	Training Loss1 27.5433 (32.7990)	Training Loss2 28.0205 (32.8477)	Training Total_Loss 27.7819 (32.8234)	Training Prec@1_up 0.000 (0.023)	Training Prec@1_down 0.000 (0.024)	
+2022-07-23 10:09:58,028: ============================================================
+2022-07-23 10:10:40,469: time cost, forward:0.12804928871750257, backward:0.10975387897379038, data cost:0.18595093381172803 
+2022-07-23 10:10:40,470: ============================================================
+2022-07-23 10:10:40,470: Epoch 1/25 Batch 5600/7662 eta: 21:55:21.667733	Training Loss1 27.8907 (32.7250)	Training Loss2 29.2850 (32.7903)	Training Total_Loss 28.5878 (32.7577)	Training Prec@1_up 0.000 (0.023)	Training Prec@1_down 0.000 (0.024)	
+2022-07-23 10:10:40,470: ============================================================
+2022-07-23 10:11:22,896: time cost, forward:0.1280524981274984, backward:0.10974861705778022, data cost:0.1859483858601506 
+2022-07-23 10:11:22,896: ============================================================
+2022-07-23 10:11:22,896: Epoch 1/25 Batch 5700/7662 eta: 21:54:10.201395	Training Loss1 30.7451 (32.6557)	Training Loss2 31.1757 (32.7401)	Training Total_Loss 30.9604 (32.6979)	Training Prec@1_up 0.000 (0.022)	Training Prec@1_down 0.000 (0.024)	
+2022-07-23 10:11:22,896: ============================================================
+2022-07-23 10:12:05,373: time cost, forward:0.1280596300658943, backward:0.10974739608856743, data cost:0.18594596036077882 
+2022-07-23 10:12:05,373: ============================================================
+2022-07-23 10:12:05,374: Epoch 1/25 Batch 5800/7662 eta: 21:55:01.982819	Training Loss1 29.8824 (32.6070)	Training Loss2 31.1602 (32.7062)	Training Total_Loss 30.5213 (32.6566)	Training Prec@1_up 0.000 (0.022)	Training Prec@1_down 0.000 (0.023)	
+2022-07-23 10:12:05,374: ============================================================
+2022-07-23 10:12:47,793: time cost, forward:0.12806050149762727, backward:0.10974394662801766, data cost:0.18594283854724958 
+2022-07-23 10:12:47,794: ============================================================
+2022-07-23 10:12:47,794: Epoch 1/25 Batch 5900/7662 eta: 21:52:33.332277	Training Loss1 28.1291 (32.5569)	Training Loss2 29.6233 (32.6717)	Training Total_Loss 28.8762 (32.6143)	Training Prec@1_up 0.000 (0.022)	Training Prec@1_down 0.000 (0.023)	
+2022-07-23 10:12:47,794: ============================================================
+2022-07-23 10:13:30,222: time cost, forward:0.12806593594818955, backward:0.10973720308899343, data cost:0.18593992581266544 
+2022-07-23 10:13:30,222: ============================================================
+2022-07-23 10:13:30,222: Epoch 1/25 Batch 6000/7662 eta: 21:52:06.888584	Training Loss1 30.3272 (32.5058)	Training Loss2 30.0404 (32.6374)	Training Total_Loss 30.1838 (32.5716)	Training Prec@1_up 0.000 (0.021)	Training Prec@1_down 0.000 (0.023)	
+2022-07-23 10:13:30,223: ============================================================
+2022-07-23 10:14:12,665: time cost, forward:0.12807115325577476, backward:0.10973130098853585, data cost:0.18593862166579073 
+2022-07-23 10:14:12,666: ============================================================
+2022-07-23 10:14:12,666: Epoch 1/25 Batch 6100/7662 eta: 21:51:51.670209	Training Loss1 29.3451 (32.4806)	Training Loss2 30.4270 (32.6270)	Training Total_Loss 29.8860 (32.5538)	Training Prec@1_up 0.000 (0.021)	Training Prec@1_down 0.000 (0.022)	
+2022-07-23 10:14:12,666: ============================================================
+2022-07-23 10:14:55,035: time cost, forward:0.12806897860301042, backward:0.10972410179872939, data cost:0.1859347356444579 
+2022-07-23 10:14:55,036: ============================================================
+2022-07-23 10:14:55,036: Epoch 1/25 Batch 6200/7662 eta: 21:48:52.978972	Training Loss1 30.9178 (32.4571)	Training Loss2 31.8562 (32.6157)	Training Total_Loss 31.3870 (32.5364)	Training Prec@1_up 0.000 (0.021)	Training Prec@1_down 0.000 (0.022)	
+2022-07-23 10:14:55,036: ============================================================
+2022-07-23 10:15:37,447: time cost, forward:0.1280721109392984, backward:0.10971832362446146, data cost:0.18593102316001725 
+2022-07-23 10:15:37,447: ============================================================
+2022-07-23 10:15:37,448: Epoch 1/25 Batch 6300/7662 eta: 21:49:28.343073	Training Loss1 32.0543 (32.4437)	Training Loss2 31.6396 (32.6099)	Training Total_Loss 31.8470 (32.5268)	Training Prec@1_up 0.000 (0.020)	Training Prec@1_down 0.000 (0.022)	
+2022-07-23 10:15:37,448: ============================================================
+2022-07-23 10:16:19,849: time cost, forward:0.12807075182596842, backward:0.10971408066181004, data cost:0.18592913453700785 
+2022-07-23 10:16:19,849: ============================================================
+2022-07-23 10:16:19,850: Epoch 1/25 Batch 6400/7662 eta: 21:48:27.919835	Training Loss1 30.4637 (32.4388)	Training Loss2 31.2736 (32.6089)	Training Total_Loss 30.8686 (32.5238)	Training Prec@1_up 0.000 (0.020)	Training Prec@1_down 0.000 (0.021)	
+2022-07-23 10:16:19,850: ============================================================
+2022-07-23 10:17:02,338: time cost, forward:0.12808392252953607, backward:0.10970943292153214, data cost:0.18592414784053599 
+2022-07-23 10:17:02,339: ============================================================
+2022-07-23 10:17:02,339: Epoch 1/25 Batch 6500/7662 eta: 21:50:26.965453	Training Loss1 33.7860 (32.4420)	Training Loss2 32.6100 (32.6113)	Training Total_Loss 33.1980 (32.5267)	Training Prec@1_up 0.000 (0.020)	Training Prec@1_down 0.000 (0.021)	
+2022-07-23 10:17:02,339: ============================================================
+2022-07-23 10:17:44,766: time cost, forward:0.12808878191638523, backward:0.10970602799300118, data cost:0.18591937427720187 
+2022-07-23 10:17:44,766: ============================================================
+2022-07-23 10:17:44,767: Epoch 1/25 Batch 6600/7662 eta: 21:47:50.308667	Training Loss1 32.5986 (32.4423)	Training Loss2 33.3431 (32.6221)	Training Total_Loss 32.9708 (32.5322)	Training Prec@1_up 0.000 (0.019)	Training Prec@1_down 0.000 (0.021)	
+2022-07-23 10:17:44,767: ============================================================
+2022-07-23 10:18:27,157: time cost, forward:0.1280873746796497, backward:0.1097032986820447, data cost:0.18591462457192479 
+2022-07-23 10:18:27,157: ============================================================
+2022-07-23 10:18:27,157: Epoch 1/25 Batch 6700/7662 eta: 21:45:59.469098	Training Loss1 33.2417 (32.4428)	Training Loss2 34.4312 (32.6360)	Training Total_Loss 33.8365 (32.5394)	Training Prec@1_up 0.000 (0.019)	Training Prec@1_down 0.000 (0.021)	
+2022-07-23 10:18:27,157: ============================================================
+2022-07-23 10:19:09,605: time cost, forward:0.12808660830376972, backward:0.10970563933435197, data cost:0.185912845555185 
+2022-07-23 10:19:09,605: ============================================================
+2022-07-23 10:19:09,606: Epoch 1/25 Batch 6800/7662 eta: 21:47:03.819296	Training Loss1 35.1748 (32.4714)	Training Loss2 34.3392 (32.6568)	Training Total_Loss 34.7570 (32.5641)	Training Prec@1_up 0.000 (0.019)	Training Prec@1_down 0.000 (0.020)	
+2022-07-23 10:19:09,606: ============================================================
+2022-07-23 10:19:51,976: time cost, forward:0.12808759621320073, backward:0.1096985859531547, data cost:0.18590569316450972 
+2022-07-23 10:19:51,977: ============================================================
+2022-07-23 10:19:51,977: Epoch 1/25 Batch 6900/7662 eta: 21:43:58.952087	Training Loss1 37.9758 (32.5195)	Training Loss2 37.7508 (32.7096)	Training Total_Loss 37.8633 (32.6145)	Training Prec@1_up 0.000 (0.019)	Training Prec@1_down 0.000 (0.020)	
+2022-07-23 10:19:51,977: ============================================================
+2022-07-23 10:20:34,379: time cost, forward:0.12809345708231976, backward:0.10969513115635564, data cost:0.1858961703113393 
+2022-07-23 10:20:34,379: ============================================================
+2022-07-23 10:20:34,380: Epoch 1/25 Batch 7000/7662 eta: 21:44:14.444858	Training Loss1 38.8587 (32.6135)	Training Loss2 47.1011 (32.7852)	Training Total_Loss 42.9799 (32.6993)	Training Prec@1_up 0.000 (0.018)	Training Prec@1_down 0.000 (0.020)	
+2022-07-23 10:20:34,380: ============================================================
+2022-07-23 10:21:16,691: time cost, forward:0.12809667037832753, backward:0.10968973458963542, data cost:0.18587862933113602 
+2022-07-23 10:21:16,691: ============================================================
+2022-07-23 10:21:16,692: Epoch 1/25 Batch 7100/7662 eta: 21:40:44.806481	Training Loss1 73.0944 (32.9324)	Training Loss2 63.8135 (33.0660)	Training Total_Loss 68.4539 (32.9992)	Training Prec@1_up 0.000 (0.018)	Training Prec@1_down 0.000 (0.020)	
+2022-07-23 10:21:16,692: ============================================================
+2022-07-23 10:21:59,050: time cost, forward:0.12809910481465261, backward:0.10968464482971522, data cost:0.18586853302622988 
+2022-07-23 10:21:59,051: ============================================================
+2022-07-23 10:21:59,051: Epoch 1/25 Batch 7200/7662 eta: 21:41:29.731861	Training Loss1 57.7565 (33.4463)	Training Loss2 54.8075 (33.5436)	Training Total_Loss 56.2820 (33.4949)	Training Prec@1_up 0.000 (0.018)	Training Prec@1_down 0.000 (0.019)	
+2022-07-23 10:21:59,051: ============================================================
+2022-07-23 10:22:41,501: time cost, forward:0.12809731166874616, backward:0.10967832043458704, data cost:0.18587777581602308 
+2022-07-23 10:22:41,501: ============================================================
+2022-07-23 10:22:41,501: Epoch 1/25 Batch 7300/7662 eta: 21:43:35.765539	Training Loss1 43.3181 (33.6646)	Training Loss2 42.6523 (33.7485)	Training Total_Loss 42.9852 (33.7065)	Training Prec@1_up 0.000 (0.018)	Training Prec@1_down 0.000 (0.019)	
+2022-07-23 10:22:41,502: ============================================================
+2022-07-23 10:23:23,975: time cost, forward:0.12809730336575562, backward:0.10966976904711187, data cost:0.18589020413407636 
+2022-07-23 10:23:23,976: ============================================================
+2022-07-23 10:23:23,976: Epoch 1/25 Batch 7400/7662 eta: 21:43:37.592652	Training Loss1 37.5556 (33.7509)	Training Loss2 36.6275 (33.8266)	Training Total_Loss 37.0915 (33.7888)	Training Prec@1_up 0.000 (0.018)	Training Prec@1_down 0.195 (0.019)	
+2022-07-23 10:23:23,976: ============================================================
+2022-07-23 10:24:06,512: time cost, forward:0.12809824670119388, backward:0.10966446641636365, data cost:0.1859066666627124 
+2022-07-23 10:24:06,513: ============================================================
+2022-07-23 10:24:06,513: Epoch 1/25 Batch 7500/7662 eta: 21:44:49.519689	Training Loss1 32.1787 (33.7649)	Training Loss2 31.8419 (33.8319)	Training Total_Loss 32.0103 (33.7984)	Training Prec@1_up 0.000 (0.018)	Training Prec@1_down 0.000 (0.019)	
+2022-07-23 10:24:06,513: ============================================================
+2022-07-23 10:24:49,028: time cost, forward:0.12809381621152827, backward:0.10965795610465255, data cost:0.18592655355953233 
+2022-07-23 10:24:49,028: ============================================================
+2022-07-23 10:24:49,028: Epoch 1/25 Batch 7600/7662 eta: 21:43:27.529645	Training Loss1 29.8549 (33.7335)	Training Loss2 29.7164 (33.7947)	Training Total_Loss 29.7857 (33.7641)	Training Prec@1_up 0.000 (0.018)	Training Prec@1_down 0.000 (0.019)	
+2022-07-23 10:24:49,029: ============================================================
+2022-07-23 10:25:16,729: Epoch 1/25 Batch 7663/7662 eta: 21:43:00.744934	Training Loss1 nan (nan)	Training Loss2 nan (nan)	Training Total_Loss nan (nan)	Training Prec@1_up 0.000 (0.018)	Training Prec@1_down 0.000 (0.019)	
+2022-07-23 10:25:16,730: ============================================================
+2022-07-23 10:25:59,440: time cost, forward:0.12226252122358842, backward:0.10440985120908179, data cost:0.20067363074331573 
+2022-07-23 10:25:59,440: ============================================================
+2022-07-23 10:25:59,440: Epoch 2/25 Batch 100/7662 eta: 21:44:05.900972	Training Loss1 nan (nan)	Training Loss2 nan (nan)	Training Total_Loss nan (nan)	Training Prec@1_up 0.000 (0.004)	Training Prec@1_down 0.000 (0.004)	
+2022-07-23 10:25:59,441: ============================================================
+2022-07-23 10:26:40,112: time cost, forward:0.12229581813716409, backward:0.10429893426559678, data cost:0.18997905601808174 
+2022-07-23 10:26:40,113: ============================================================
+2022-07-23 10:26:40,113: Epoch 2/25 Batch 200/7662 eta: 20:45:10.772568	Training Loss1 nan (nan)	Training Loss2 nan (nan)	Training Total_Loss nan (nan)	Training Prec@1_up 0.000 (0.002)	Training Prec@1_down 0.000 (0.002)	
+2022-07-23 10:26:40,113: ============================================================

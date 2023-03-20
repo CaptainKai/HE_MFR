@@ -1,0 +1,16 @@
+2022-07-06 17:29:26,230: ('name', 'amsoft-36')
+2022-07-06 17:29:26,230: ('description', '测试在conv4之前加ln进行直接混合训练的效果')
+2022-07-06 17:29:26,231: ('data_settings', {'training': {'batch_size': 512, 'num_workers': 4, 'num_class': 86876, 'loader_settings': {'lmdb_path': '/home/ubuntu/data4/lk/data/lmdb_mask_augu_full', 'num': 3923399, 'max_reader': 4, 'augu_paral': False, 'ldm68': True, 'augu_rate': 0.5, 'shuffle': False}}})
+2022-07-06 17:29:26,231: ('common_settings', {'backbone': {'num': 1, 'settings': [{'backbone_model_name': 'SimpleResnet_36', 'args': {'input_size': [112, 112], 'ln': True}, 'resume_net_model': None}]}, 'classifier': {'num': 1, 'settings': [{'classifier_model_name': 'MarginCosineProduct', 'args': {'in_features': 512, 'out_features': 86876}, 'resume_net_classifier': None, 'alpha': 1}]}})
+2022-07-06 17:29:26,231: ('gpu_settings', {'no_cuda': False, 'gpu_num': 1})
+2022-07-06 17:29:26,231: ('log_settings', {'training': {'log_path': './logs/test.log', 'log_pic_path': './logs/pic/test/', 'save_path': 'snapshot/test/', 'log_interval': 100}, 'testing': {'result_path': './result/result.txt'}})
+2022-07-06 17:29:26,231: ('other_settings', {'resume': False, 'resume_net_optimizer': None, 'start_epoch': 1, 'max_epoch': 36, 'lr': 0.1, 'base': 'epoch', 'step_size': [10, 20, 30], 'momentum': 0.9, 'gama': 0.1, 'weight_decay': 0.0005})
+2022-07-06 17:29:26,231: ('environ_settings', {'rank': -1, 'dist_url': 'env://', 'world_size': -1, 'gpu': None, 'dist_backend': 'nccl', 'distributed': False, 'master_port': 22345, 'multiprocessing_distributed': False, 'SEED': 1337})
+2022-07-06 17:29:26,231: ('local_rank', -1)
+2022-07-06 17:29:30,457: Use DP
+2022-07-06 17:29:30,623: CrossEntropyLoss()
+2022-07-06 17:29:30,623: <bound method Trainer.loss_func of <trainner.Trainer object at 0x7f23da756d68>>
+2022-07-06 17:30:53,616: time cost, forward:0.017842523979418205, backward:0.04644819943591802, data cost:0.7689640353424381 
+2022-07-06 17:30:53,616: ============================================================
+2022-07-06 17:30:53,616: Epoch 1/36 Batch 100/7662 eta: 2 days, 15:33:57.671423	Training Loss1 21.8722 (28.7787)	Training Total_Loss 21.8722 (28.7787)	Training Prec@1 0.000 (0.000)	Training Prec@5 0.000 (0.000)	
+2022-07-06 17:30:53,616: ============================================================

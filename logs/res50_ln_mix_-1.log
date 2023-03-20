@@ -1,0 +1,12 @@
+2022-07-06 17:16:19,774: ('name', 'res-50')
+2022-07-06 17:16:19,774: ('description', '把bn换成ln，看效果如何')
+2022-07-06 17:16:19,775: ('data_settings', {'training': {'batch_size': 512, 'num_workers': 4, 'num_class': 86876, 'loader_settings': {'lmdb_path': '/home/ubuntu/data4/lk/data/lmdb_mask_augu_full', 'num': 3923399, 'max_reader': 4, 'augu_paral': False, 'ldm68': True, 'augu_rate': 0.5, 'shuffle': False}}})
+2022-07-06 17:16:19,775: ('common_settings', {'backbone': {'num': 1, 'settings': [{'backbone_model_name': 'resnet50', 'args': {'input_size': [112, 112]}, 'resume_net_model': None}]}, 'classifier': {'num': 1, 'settings': [{'classifier_model_name': 'MarginCosineProduct', 'args': {'in_features': 512, 'out_features': 86876}, 'resume_net_classifier': None, 'alpha': 1}]}})
+2022-07-06 17:16:19,775: ('gpu_settings', {'no_cuda': False, 'gpu_num': 1})
+2022-07-06 17:16:19,775: ('log_settings', {'training': {'log_path': './logs/res50_ln_mix.log', 'log_pic_path': './logs/pic/res50_ln_mix/', 'save_path': 'snapshot/res50_ln_mix/', 'log_interval': 100}, 'testing': {'result_path': './result/result.txt'}})
+2022-07-06 17:16:19,775: ('other_settings', {'resume': False, 'resume_net_optimizer': None, 'start_epoch': 1, 'max_epoch': 36, 'lr': 0.1, 'base': 'epoch', 'step_size': [10, 20, 30], 'momentum': 0.9, 'gama': 0.1, 'weight_decay': 0.0005})
+2022-07-06 17:16:19,775: ('environ_settings', {'rank': -1, 'dist_url': 'env://', 'world_size': -1, 'gpu': None, 'dist_backend': 'nccl', 'distributed': False, 'master_port': 22345, 'multiprocessing_distributed': False, 'SEED': 1337})
+2022-07-06 17:16:19,776: ('local_rank', -1)
+2022-07-06 17:16:24,059: Use DP
+2022-07-06 17:16:24,223: CrossEntropyLoss()
+2022-07-06 17:16:24,223: <bound method Trainer.loss_func of <trainner.Trainer object at 0x7fee899fcc50>>
