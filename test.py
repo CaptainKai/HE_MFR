@@ -153,85 +153,29 @@ if __name__ == '__main__':
     # testlist2 = "/home/ubuntu/Work/lk/test_data/megaface_10000_list_transform_arcface.txt"
     # testlist2 = "/home/ubuntu/Work/lk/test_data/megaface_10000_list_transform_arcface_mtcnn.txt"
     # testlist2 = "/home/ubuntu/Work/lk/test_data/megaface_10000_mask_list_transform.txt"# 常用
-    # testlist = "/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/weibo_large/new_diff_nodiff/img_list_normal.txt"
-    # testlist = "/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/weibo_large/new_diff_nodiff/img_list_mask.txt"
-    # testlist = "/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/baidu_hd/img_list_normal.txt"
-    # testlist = "/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/baidu_hd/new_diff_nodiff/img_list_mask.txt"
-    # testlist = "/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/baidu_hd/new_diff_nodiff/img_list_normal.txt"
 
-    # testlist3 = "/home/ubuntu/data3/data/AR_warp_zip/img_list_aligned.txt"
     # testlist3 = "/home/ubuntu/data1/lk/lfw_transform.txt"
-    # testlist3 = "/home/ubuntu/data3/data/spider/baidu/image_hd_filter/img_list_mask_0714.txt"
     # testlist3 = "/home/ubuntu/data1/lk/lfw_mask_transform.txt"
     # suffix = "res_arc_50_20" # cfg name + 备注
-    # suffix = "ArcfaceResnet_50" # cfg name + 备注
-    # suffix = "SResnet_36_split_noDrop_noLA_b1_20_init_up" # cfg name + 备注
     # suffix = "am_36_20"
-    # suffix = "res_50_ddp_split_layer2_mask_0.5_fixBug_20_down"
-    # suffix = "res_50_mix_20"
-    # suffix = "res_sph2_50_30"
-    # suffix = "res_50_arc_noNorm_20"
-    # suffix = "SResnet_36_split_noDrop_noLA_b3_LR_20" # 左右特征分支
-    # suffix = "SR36_sphereNorm_20"
-    # suffix = "SR36_sphereNorm_mix_25"
-    # suffix = "SR36_mix_25_25"
-    # suffix = "sr_36_b3_cl_seperate_28"
-    # suffix = "sr_36_fc_bothMix_seperate_30"
-    # suffix = "SR36_sphereface2_25"
-    # suffix = "res_50_split_noDrop_noLA_f1_20"
-    # suffix = "am_20_half" # cfg name + 备注
-    # suffix = "SResnet_36_split_noDrop_noLA_b3_init_tri_fixBug_4loss_0.35_0.2_fixBug_25" # cfg name + 备注
-    # suffix = "SR_36_ddp_multiTask_40" # cfg name + 备注
-    # suffix = "SResnet_36_split_noDrop_noLA_b3_init_classSeparate_fixBug_25"
-    # suffix = "SResnet_36_split_noDrop_noLA_b3_init_tri_3branch_25"
     # suffix = "SResnet_36_split_noDrop_noLA_b3_init_repeat_20"
     suffix = "PCM_AM"
     # suffix = "SimpleResnet_fullsplit_36_noLA_20"
-    # suffix = "ArcfaceResnet_101" # cfg name + 备注
-    # suffix = "SimpleResnet_36"
-    # suffix = "dense121"
     
     # # pair_test()
-    # model_name = "densenet_121"
     # model_name = "resnet50"
     # model_name = "resnet50_split"
-    # model_name = "ResNet50_split_abla"
-    # model_name = "SimpleResnet_fullsplit_36"
-    # model_name = "SimpleResnet_split_abla_36"
-    # model_name = "SimpleResnet_split_abla_36_fusion"
     model_name = "SimpleResnet_36"
     # model_name = "SimpleResnet_20"
-    # model_name = "SimpleResnet_atten_split_abla_36"
     # model_name = "SimpleResnet_36_multiTask"
-    
-    # model_name = "resnet101"
-    # model_path = "/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/snapshot/msra-gt-mask-arguementation-0.5-resnest50_test/amsoft_25_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/res_50_ddp/backbone_20_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/res_50_mix/backbone_20_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/res_arc_50_mask/backbone_20_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/res_50_ddp_split_layer2_fixBug/backbone_30_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/res_50_ddp_split_layer2_mask_0.5_fixBug/backbone_30_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/res_50_split_noDrop_noLA_f1/backbone_20_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/res_arc_50/backbone_20_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/res_50_arc_noNorm/backbone_0_20_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SR_36_ddp_multiTask/backbone_40_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_justSeparate/backbone_30_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_tri_fixBug_4loss_0.35_0.2_fixBug/backbone_25_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_repeat/backbone_20_checkpoint.pth"
     model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/res_am_36_ddp_shareConv/backbone_0_20_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_classSeparate_fixBug/backbone_25_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_tri_3branch/backbone_25_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_3loss_1/backbone_25_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SR_36_ddp_sphereNorm/backbone_20_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SR_36_ddp_sphereNorm_mix_continue/backbone_25_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SR_36_ddp_mix/backbone_0_25_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/sr_36_b3_cl_seperate/backbone_0_28_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/sr_36_fc_bothMix_seperate/backbone_0_30_checkpoint.pth" # TODO 2023年6月7日16:32:36
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_LR/backbone_20_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_fullsplit/backbone_20_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/Arcface_Resnet101_35.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/am_20_ddp_test/backbone_381_checkpoint.pth"
-    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/amDensenet_121_test/backbone_38_checkpoint.pth"
     multi_gpus = False
     
     import models
@@ -261,7 +205,4 @@ if __name__ == '__main__':
 
     # print(testlist3)
     # save_feature_list(testlist3, suffix, model)
-
-    # testlist3="/home/ubuntu/data3/lk/amsoft_pytorch/test3.txt"
-    # accuracy_test(testlist3)
 

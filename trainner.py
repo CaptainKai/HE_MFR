@@ -42,7 +42,6 @@ class Trainer():
         
     def run(self):
         
-    
         os.environ['MASTER_PORT'] = str(self.environ_settings["master_port"]) # for multi training task
         
         if self.environ_settings["dist_url"] == "env://" and self.environ_settings["world_size"] == -1:
