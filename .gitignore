@@ -3,13 +3,13 @@ __pycache__
 .vscode
 logs
 # release
-scripts/
+/scripts/
 !scripts/test.py
 snapshot/
 temp_datasets/
 test/
 
-cfgs/
+/cfgs/
 !/cfgs/am_36_ddp_visualization.py
 !/cfgs/am_36_ddp.py
 !/cfgs/res_50_ddp_pipline.py
@@ -19,8 +19,7 @@ cfgs/
 !/cfgs/SR_36_ddp_split_abla_pipeline.py
 
 
-
-dataprocess
+/dataprocess
 !dataprocess/create*
 !dataprocess/dataloader_lmdb.py
 !dataprocess/wearmask.py
