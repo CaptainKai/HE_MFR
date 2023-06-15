@@ -4,34 +4,35 @@ __pycache__
 logs
 # release
 scripts/
-! scripts/test.py
+!scripts/test.py
 snapshot/
 temp_datasets/
 test/
 
-! cfgs/am_36_ddp_visualization.py
-! cfgs/am_36_ddp.py
-! cfgs/res_50_ddp_pipline.py
-! cfgs/res_am_36_ddp_pipeline.py
-! cfgs/res_arc_50_ddp_pipeline.py
-! cfgs/SR_36_ddp_pipeline.py
-! cfgs/SR_36_ddp_split_abla_pipeline.py
 cfgs/
+!/cfgs/am_36_ddp_visualization.py
+!/cfgs/am_36_ddp.py
+!/cfgs/res_50_ddp_pipline.py
+!/cfgs/res_am_36_ddp_pipeline.py
+!/cfgs/res_arc_50_ddp_pipeline.py
+!/cfgs/SR_36_ddp_pipeline.py
+!/cfgs/SR_36_ddp_split_abla_pipeline.py
+
 
 
 dataprocess
-! dataprocess/create*
-! dataprocess/dataloader_lmdb.py
-! dataprocess/wearmask.py
-! dataprocess/utils.py
-! dataprocess/lmdb_init.py
+!dataprocess/create*
+!dataprocess/dataloader_lmdb.py
+!dataprocess/wearmask.py
+!dataprocess/utils.py
+!dataprocess/lmdb_init.py
 
 functions
 release
 result
-! scripts/pair_test.py
+!scripts/pair_test.py
 
-test*
+tester.py
 train*
-! trainner.py
-! train_v04.py
+!trainner.py
+!train_v04.py
