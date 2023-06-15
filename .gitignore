@@ -1,8 +1,7 @@
 __pycache__
 .ipynb_checkpoints
 .vscode
-logs/**.log
-logs/pic/**
+logs
 # release
 scripts/
 ! scripts/test.py

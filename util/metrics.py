@@ -136,6 +136,57 @@ def ROC_by_mat(score_mat, label_mat, thresholds=None, FARs=None, get_false_indic
     else:
         return TARs, FARs, thresholds
 
+import torch
+
+def ROC_by_mat_cuda(score_mat, label_mat, thresholds=None, FARs=None, get_false_indices=False, triu_k=None):
+    ''' Compute ROC using a pairwise score matrix and a corresponding label matrix.
+        A wapper of ROC function.
+    '''
+    assert score_mat.ndim == 2
+    assert score_mat.shape == label_mat.shape
+    assert label_mat.dtype == np.bool
+
+    # Move data to GPU
+    score_mat = torch.from_numpy(score_mat).cuda()
+    label_mat = torch.from_numpy(label_mat).cuda()
+
+    # Convert into vectors
+    m, n = score_mat.shape
+    if triu_k is not None:
+        assert m == n, "If using triu for ROC, the score matrix must be a square matrix!"
+        triu_indices = torch.triu_indices(m, n, offset=triu_k)
+        score_vec = score_mat[triu_indices[0], triu_indices[1]]
+        label_vec = label_mat[triu_indices[0], triu_indices[1]]
+    else:
+        score_vec = score_mat.flatten()
+        label_vec = label_mat.flatten()
+
+    # Convert to numpy arrays
+    score_vec = score_vec.cpu().numpy()
+    label_vec = label_vec.cpu().numpy()
+
+    # Compute ROC
+    if get_false_indices:
+        TARs, FARs, thresholds, false_accept_indices, false_reject_indices = \
+            ROC(score_vec, label_vec, thresholds, FARs, True)
+    else:
+        TARs, FARs, thresholds = ROC(score_vec, label_vec, thresholds, FARs, False)
+
+    # Convert false accept/reject indices into [row, col] indices
+    if get_false_indices:
+        rows, cols = np.meshgrid(np.arange(m), np.arange(n), indexing='ij')
+        rc = np.stack([rows, cols], axis=2)
+        if triu_k is not None:
+            rc = rc[triu_indices[0], triu_indices[1], :]
+        else:
+            rc = rc.reshape([-1, 2])
+
+        for i in range(len(FARs)):
+            false_accept_indices[i] = rc[false_accept_indices[i]]
+            false_reject_indices[i] = rc[false_reject_indices[i]]
+        return TARs, FARs, thresholds, false_accept_indices, false_reject_indices
+    else:
+        return TARs, FARs, thresholds
 
 
 

@@ -10,11 +10,11 @@ name = "SResnet_split"
 backbone_model_name = "SimpleResnet_split_abla_36" # SimpleResnet_fullsplit_36
 classify_model_name = "MarginCosineProduct" # DCFace
 
-## SResnet_36_split_noDrop_noLA_b3_LR  SResnet_36_split_noDrop_noLA_b3_init_repeat
-resume_net_model = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_justSeparate/backbone_5_checkpoint.pth"
+## SResnet_36_split_noDrop_noLA_b3_LR  SResnet_36_split_noDrop_noLA_b3_init_repeat SResnet_36_split_noDrop_noLA_b3_init_justSeparate
+resume_net_model = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_repeat/backbone_20_checkpoint.pth"
 resume_net_model = None
 # resume_net_classifier = None
-resume_net_classifier = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_justSeparate/classifier_status_5_checkpoint.pth"
+resume_net_classifier = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_repeat/classifier_status_20_checkpoint.pth"
 
 # about gpu
 no_cuda = False

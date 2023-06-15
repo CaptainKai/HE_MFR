@@ -10,7 +10,8 @@ from .senet import *
 from .mapping_net import *
 from .resnet import *
 from .hpda import HPDA_res50
-from .Module import MLB, PCM_AM
+from .Module import MLB
+from .xcos import PCM_AM
 # from .resnet import ResNet_50 as resnet50
 # from .resnet import ResNet_101 as resnet101
 # from .resnet import ResNet_152 as resnet152

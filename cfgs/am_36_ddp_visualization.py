@@ -7,12 +7,14 @@ naming convention: 	backbonename-layernum(数字)-method(大写)-备注(小写)
 name = "amsoft-20"
 backbone_model_name = "SimpleResnet_36"
 classify_model_name = "MarginCosineProduct" # MarginCosineProduct
-# resume_net_model = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/am_36_ddp/backbone_20_checkpoint.pth"
-resume_net_model = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_DL/backbone_20_checkpoint.pth"
+# resume_net_model = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/am_36_ddp_mask/backbone_20_checkpoint.pth"
+resume_net_model = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/am_36_ddp/backbone_20_checkpoint.pth"
+# resume_net_model = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_DL/backbone_20_checkpoint.pth"
 # resume_net_model = None
 # resume_net_classifier = None
-resume_net_classifier = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_DL/classifier_status_20_checkpoint.pth"
-# resume_net_classifier = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/am_36_ddp/classifier_status_38_checkpoint.pth"
+# resume_net_classifier = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_DL/classifier_status_20_checkpoint.pth"
+resume_net_classifier = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/am_36_ddp/classifier_status_20_checkpoint.pth"
+# resume_net_classifier = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/am_36_ddp_mask/classifier_status_20_checkpoint.pth"
 
 # about gpu
 no_cuda = False

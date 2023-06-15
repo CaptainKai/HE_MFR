@@ -35,12 +35,6 @@ class Trainer():
         self.data_settings = self.config.data_settings["training"]
         self.other_settings = self.config.other_settings
         self.backbone_settings = self.common_settings["backbone"]["settings"]
-        
-        if "plugModule" in self.common_settings.keys():
-            self.plugModule_settings = self.common_settings["plugModule"]["settings"]
-        else:
-            self.common_settings["plugModule"] = {"num":0}
-            self.plugModule_settings = None
         self.classifier_settings = self.common_settings["classifier"]["settings"]
         
         
@@ -135,33 +129,7 @@ class Trainer():
                 self.model[i].load_state_dict(new_state_dict)
                 if self.environ_settings["rank"] <= 0:
                     self.logger.print("resume net (model) loaded")
-        
-        for i in range(self.common_settings["plugModule"]["num"]):
-            self.plugModule.append(
-                models.model_zoo.get_model(self.plugModule_settings[i]["plugModule_model_name"], **self.plugModule_settings[i]["args"])
-            )
-            
-            if self.environ_settings["rank"] <= 0:
-                    self.logger.print(self.plugModule[i])
-            
-            if self.plugModule_settings[i]["resume_net_model"] is not None:
-                if self.environ_settings["rank"] <= 0:
-                    self.logger.print('Loading resume (model) network...')
-                state_dict = torch.load(self.plugModule_settings[i]["resume_net_model"])["model_%d"%(i)]
-                # create new OrderedDict that does not contain `module.`
-                from collections import OrderedDict
-                new_state_dict = OrderedDict()
-                for k, v in state_dict.items():
-                    head = k[:7]
-                    if head == 'module.':
-                        name = k[7:] # remove `module.`
-                    else:
-                        name = k
-                    new_state_dict[name] = v
-                self.plugModule[i].load_state_dict(new_state_dict)
-                if self.environ_settings["rank"] <= 0:
-                    self.logger.print("resume net (plugModule) loaded")
-        
+                
         for i in range(self.common_settings["classifier"]["num"]):
             self.classifier.append(
                 models.model_zoo.get_model(self.classifier_settings[i]["classifier_model_name"], **self.classifier_settings[i]["args"])
@@ -186,8 +154,7 @@ class Trainer():
         
         self.optimizer = torch.optim.SGD(
                             [{'params': x.parameters()} for x in self.model]+
-                            [{'params': x.parameters()} for x in self.classifier]+
-                            [{'params': x.parameters()} for x in self.plugModule]
+                            [{'params': x.parameters()} for x in self.classifier]
                             ,
                             weight_decay=self.other_settings["weight_decay"],
                             lr=self.other_settings["lr"],
@@ -227,10 +194,10 @@ class Trainer():
                 torch.cuda.set_device(self.environ_settings["gpu"])
                 for i in range(self.common_settings["backbone"]["num"]):
                     self.model[i].cuda(self.environ_settings["gpu"])
-                    self.model[i] = torch.nn.parallel.DistributedDataParallel(self.model[i], device_ids=[self.environ_settings["gpu"]])
+                    self.model[i] = torch.nn.parallel.DistributedDataParallel(self.model[i], device_ids=[self.environ_settings["gpu"]], find_unused_parameters=True)
                 for i in range(self.common_settings["classifier"]["num"]):
                     self.classifier[i].cuda(self.environ_settings["gpu"])
-                    self.classifier[i] = torch.nn.parallel.DistributedDataParallel(self.classifier[i], device_ids=[self.environ_settings["gpu"]])
+                    self.classifier[i] = torch.nn.parallel.DistributedDataParallel(self.classifier[i], device_ids=[self.environ_settings["gpu"]], find_unused_parameters=True)
                 # When using a single GPU per process and per
                 # DistributedDataParallel, we need to divide the batch size
                 # ourselves based on the total number of GPUs we have
@@ -241,10 +208,10 @@ class Trainer():
             else:
                 for i in range(self.common_settings["backbone"]["num"]):
                     self.model[i].cuda()
-                    self.model[i] = torch.nn.parallel.DistributedDataParallel(self.model[i])
+                    self.model[i] = torch.nn.parallel.DistributedDataParallel(self.model[i], find_unused_parameters=True)
                 for i in range(self.common_settings["classifier"]["num"]):
                     self.classifier[i].cuda()
-                    self.classifier[i] = torch.nn.parallel.DistributedDataParallel(self.classifier[i])
+                    self.classifier[i] = torch.nn.parallel.DistributedDataParallel(self.classifier[i], find_unused_parameters=True)
                 if self.environ_settings["rank"] <= 0:
                     self.logger.print("use all available GPUs")
         elif self.environ_settings["gpu"] is not None:
@@ -282,9 +249,11 @@ class Trainer():
 
         self.loss = []
         # loss = torch.nn.CrossEntropyLoss().cuda(self.environ_settings["gpu"])
-        self.loss.append(torch.nn.CrossEntropyLoss())
-        self.loss.append(torch.nn.LogSoftmax(dim=1))
-        self.loss.append(torch.nn.NLLLoss())
+        self.loss.append(torch.nn.CrossEntropyLoss()) ## ! TODO loss是需要手动修改的
+        self.loss.append(torch.nn.MSELoss())
+        # self.loss.append(torch.nn.LogSoftmax(dim=1))
+        # self.loss.append(torch.nn.NLLLoss())
+        
         
         if self.environ_settings["rank"] <= 0:
             self.logger.print(self.loss)
@@ -358,6 +327,8 @@ class Trainer():
             measurement.append(AverageMeter())
         if self.common_settings["classifier"]["num"]==1:
             measurement.append(AverageMeter())
+        if "plugin" in self.backbone_settings[0]["args"].keys() and self.backbone_settings[0]["args"]["plugin"]=="PCM_AM":
+            loss_recorder.append(AverageMeter())
         loss_recorder.append(AverageMeter()) # for total loss
 
 
@@ -372,10 +343,18 @@ class Trainer():
             labels = data_batch[1].cuda(self.environ_settings["gpu"], non_blocking=True)
             if self.data_settings["loader_settings"]["ldm68"]:
                 classes = data_batch[2].cuda(self.environ_settings["gpu"], non_blocking=True)
-            # inputs, labels = inputs.to(cfg['gpu']), torch.from_numpy(np.array(labels)).to(cfg['gpu'])
+            if self.data_settings["loader_settings"]["augu_paral"]:
+                maskedInputs= data_batch[-2].cuda(self.environ_settings["gpu"], non_blocking=True)
+                inputs = torch.cat((inputs, maskedInputs), dim=0) # ! 注意前半段是正常，后半段是口罩
+
+            _t["forward_pass"].tic() # ! 要求augu的参数必须得有！
+            featuresList = list(self.model[0](inputs, self.data_settings["loader_settings"]["augu_paral"])) # tuple转list； # ! model内没有做口罩和正常的区分
+            # featuresList = self.model[0](inputs, self.data_settings["loader_settings"]["augu_paral"]) # tuple转list； # ! model内没有做口罩和正常的区分
             
-            _t["forward_pass"].tic()
-            featuresList = self.model[0](inputs)
+            if "norm" in self.backbone_settings[0]["args"].keys() and self.backbone_settings[0]["args"]["norm"]==False:
+                ## TODO 比较硬的执行flatten命令
+                featuresList[0] = torch.flatten(featuresList[0], start_dim=1)
+                featuresList[1] = torch.flatten(featuresList[1], start_dim=1)
             # features_down = features_down*(1-classes.unsqueeze(1))
             ## multi output
             outputList = []
@@ -384,13 +363,18 @@ class Trainer():
             else:
                 for i in range(self.common_settings["classifier"]["num"]):
                     outputList.append(self.classifier[i](featuresList[i], labels)) # outputs_up, original_logits_up
-                
+
             _t["forward_pass"].toc()
             lossList=[]
             lossList.append( self.loss[0](outputList[0][0], labels) )
             if self.common_settings["classifier"]["num"]==2:
                 lossList.append( self.loss[0](outputList[1][0], labels) )
             
+            total_loss = self.loss_func(lossList)
+            if "plugin" in self.backbone_settings[0]["args"].keys() and self.backbone_settings[0]["args"]["plugin"]=="PCM_AM":
+                lossList.append( self.loss[-1](featuresList[2], torch.full_like(featuresList[2], 1)) )
+                total_loss += lossList[-1]
+
             # normal_num = max( (1-classes).sum(), 1)
             # log_softmax_down = self.loss[1](outputList[1][0])*(1-classes.unsqueeze(1))
             # lossList.append( self.loss[2](log_softmax_down, labels)*(classes.shape[0]**1) / (normal_num**1) )
@@ -400,7 +384,7 @@ class Trainer():
             # total_loss = (loss + 1*loss2 + 1*loss3)/3
             # total_loss = (loss + 2*loss3)/3
 
-            total_loss = self.loss_func(lossList)
+            
             lossList.append(total_loss)
             
             # total_loss = loss

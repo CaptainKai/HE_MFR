@@ -21,7 +21,8 @@ def get_mask(img, ldm68, rate, valid=True):
     if p<=rate and valid:    
         color_index = random.randint(0,6) # include end point
         # color_index = 0 # include end point
-        # color_index = 0 # -1,1,0,2,3
+        # color_index = 1 # -1,1,0,2,3
+        # print("color_index:", color_index)
         ldm68 = [int(x) for x in ldm68.split(" ")]
         # [r,g,b]=img.split()
         # from PIL import Image
@@ -122,9 +123,9 @@ class ImageList():
         # 是否同时并行输出增广数据
         if self.augu_paral:
             if self.ldm:
-                return img, new_img, int(label), ldm, int(flag), diff_location
+                return img, int(label), ldm, int(flag), new_img, diff_location
             else:
-                return img, new_img, int(label), int(flag), diff_location
+                return img, int(label), int(flag), new_img, diff_location
         else:
             if self.ldm68:
                 if self.ldm:

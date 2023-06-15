@@ -267,8 +267,8 @@ class FaceMasker:
 
 
 if __name__ == '__main__':
-    dataset_path = '/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/facecrub_local'
-    save_dataset_path = '/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/facecrub_local_mask'
+    dataset_path = '/home/ubuntu/data2/lk/gan/dcface/dcface/sample_images/id_images' # /home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/facecrub_local
+    save_dataset_path = '/home/ubuntu/data2/lk/gan/dcface/dcface/sample_images/style_images/mask' # /home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/facecrub_local_mask
     for root, dirs, files in os.walk(dataset_path, topdown=False):
         for name in files:
             new_root = root.replace(dataset_path, save_dataset_path)

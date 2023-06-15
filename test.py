@@ -28,7 +28,7 @@ def extractDeepFeature(img, model,flop=False, transform=transform):
         ft = torch.cat((model(img), model(img_)), 1)[0].to('cpu')
         return ft
     else:
-        # return model(img)[0].to('cpu') # origin
+        return model(img)[0].to('cpu') # origin
         # return model.forward_split(img, split_index=int(56.7366-4))[0].to('cpu') # origin
         # return model(img)[0][0].to('cpu') # 0:UP 1:DOWN
         ### full
@@ -49,7 +49,7 @@ def extractDeepFeature_ldm(img, ldm, model,flop=False, transform=transform):
     return model(img, ldm)[0].to('cpu')  
 
 def pair_test():
-    model = amsoft.AmsoftBackbone().to('cuda')
+    model = amsoft.AmsoftBackbone().to('cuda')  
     model.load_state_dict(torch.load('/home/ubuntu/data3/lk/amsoft_pytorch/snapshot/filtamsoft_33_checkpoint.pth'))#/home/ubuntu/data3/lk/amsoft_pytorch/snapshot/filtamsoft_27_checkpoint.pth
     model.eval()
     with open('test.txt') as f:
@@ -145,14 +145,14 @@ if __name__ == '__main__':
     # /home/ubuntu/data3/lk/megaface_test/facescrublist_txt/facescrub_list_transform.txt
     # /home/ubuntu/data2/lk/facebox/pytorch_version/FaceBoxes_landmark/data/Megaface/megaface_10000_list_aligned.txt
     # /home/ubuntu/data2/lk/facebox/pytorch_version/FaceBoxes_landmark/data/Facecrub/facescrub_list_aligned.txt
-    testlist = "/home/ubuntu/Work/lk/test_data/facescrub_mask_list_transform.txt"
-    # testlist = "/home/ubuntu/Work/lk/test_data/facescrub_list_transform_Meng.txt"
+    # testlist = "/home/ubuntu/Work/lk/test_data/facescrub_mask_list_transform.txt" # 常用
+    testlist = "/home/ubuntu/Work/lk/test_data/facescrub_list_transform_Meng.txt"# 常用
     # testlist = "/home/ubuntu/Work/lk/test_data/facescrub_list_transform_Meng_arcface.txt"
     # testlist = "/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/pairtest/lfw_transform_lzj/lfw_filelist.txt"
-    # testlist2 = "/home/ubuntu/Work/lk/test_data/megaface_10000_list_transform_repeat.txt"
+    testlist2 = "/home/ubuntu/Work/lk/test_data/megaface_10000_list_transform_repeat.txt"# 常用
     # testlist2 = "/home/ubuntu/Work/lk/test_data/megaface_10000_list_transform_arcface.txt"
     # testlist2 = "/home/ubuntu/Work/lk/test_data/megaface_10000_list_transform_arcface_mtcnn.txt"
-    testlist2 = "/home/ubuntu/Work/lk/test_data/megaface_10000_mask_list_transform.txt"
+    # testlist2 = "/home/ubuntu/Work/lk/test_data/megaface_10000_mask_list_transform.txt"# 常用
     # testlist = "/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/weibo_large/new_diff_nodiff/img_list_normal.txt"
     # testlist = "/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/weibo_large/new_diff_nodiff/img_list_mask.txt"
     # testlist = "/home/ubuntu/data2/lk/amsoft_pytorch/amsoft_pytorch/data/baidu_hd/img_list_normal.txt"
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     # suffix = "SR36_sphereNorm_mix_25"
     # suffix = "SR36_mix_25_25"
     # suffix = "sr_36_b3_cl_seperate_28"
-    suffix = "sr_36_fc_bothMix_seperate_30"
+    # suffix = "sr_36_fc_bothMix_seperate_30"
     # suffix = "SR36_sphereface2_25"
     # suffix = "res_50_split_noDrop_noLA_f1_20"
     # suffix = "am_20_half" # cfg name + 备注
@@ -184,7 +184,8 @@ if __name__ == '__main__':
     # suffix = "SR_36_ddp_multiTask_40" # cfg name + 备注
     # suffix = "SResnet_36_split_noDrop_noLA_b3_init_classSeparate_fixBug_25"
     # suffix = "SResnet_36_split_noDrop_noLA_b3_init_tri_3branch_25"
-    # suffix = "SResnet_36_split_noDrop_noLA_b3_3loss_1_25"
+    # suffix = "SResnet_36_split_noDrop_noLA_b3_init_repeat_20"
+    suffix = "PCM_AM"
     # suffix = "SimpleResnet_fullsplit_36_noLA_20"
     # suffix = "ArcfaceResnet_101" # cfg name + 备注
     # suffix = "SimpleResnet_36"
@@ -217,6 +218,7 @@ if __name__ == '__main__':
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_justSeparate/backbone_30_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_tri_fixBug_4loss_0.35_0.2_fixBug/backbone_25_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_repeat/backbone_20_checkpoint.pth"
+    model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/res_am_36_ddp_shareConv/backbone_0_20_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_classSeparate_fixBug/backbone_25_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_init_tri_3branch/backbone_25_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_3loss_1/backbone_25_checkpoint.pth"
@@ -224,7 +226,7 @@ if __name__ == '__main__':
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SR_36_ddp_sphereNorm_mix_continue/backbone_25_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SR_36_ddp_mix/backbone_0_25_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/sr_36_b3_cl_seperate/backbone_0_28_checkpoint.pth"
-    model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/sr_36_fc_bothMix_seperate/backbone_0_30_checkpoint.pth"
+    # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/sr_36_fc_bothMix_seperate/backbone_0_30_checkpoint.pth" # TODO 2023年6月7日16:32:36
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_b3_LR/backbone_20_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/SResnet_36_split_noDrop_noLA_fullsplit/backbone_20_checkpoint.pth"
     # model_path = "/home/ubuntu/data2/lk/recognition/pytorch_new/snapshot/Arcface_Resnet101_35.pth"
@@ -234,7 +236,8 @@ if __name__ == '__main__':
     
     import models
     # fusion_mode = models.model_zoo.get_model("MLB", d=256, c=256, active_mode=0)
-    model = models.get_model(model_name, input_size=[112,112], fc_num=2)
+    # model = models.get_model(model_name, input_size=[112,112], fc_num=2)
+    model = models.get_model(model_name, phase="test", input_size=[112,112], fc_num=1, fc=False, norm=False, plugin="PCM_AM")
     # model = models.get_model(model_name, input_size=[112,112], three_branch=True)
     # model = models.get_model(model_name)
     

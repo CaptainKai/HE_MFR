@@ -6,6 +6,7 @@ from torch.nn.modules.dropout import AlphaDropout, Dropout2d
 
 from .cbam import CBAM
 from .bam import BAM
+from .xcos import PCM_AM
 
 class ConvPrelu(nn.Module):
 
@@ -145,7 +146,7 @@ class AttentionModule(nn.Module):
 
 class SimpleResidualBackbone(nn.Module):
 
-    def __init__(self, layers, use_se=False, block=SimpleResidualUnit, phase='train', input_size=[112, 112], att_type=None, ln=False, fc=True, fc_num=1, norm=True):
+    def __init__(self, layers, use_se=False, block=SimpleResidualUnit, phase='train', input_size=[112, 112], att_type=None, ln=False, fc=True, fc_num=1, norm=True, plugin=False):
         super(SimpleResidualBackbone, self).__init__()
         self.phase = phase
         self.use_se = use_se
@@ -176,6 +177,12 @@ class SimpleResidualBackbone(nn.Module):
         
         self.conv4 = ConvPrelu(256, 512, kernel_size=3, stride=2, padding=1, filter='xavier')
         self.layer4 = self._make_layer(512, base_layer=block,layers_num=layers[3], att_type=att_type)
+        
+        if plugin=="PCM_AM":
+            self.plugin = PCM_AM()
+        else:
+            self.plugin = None
+        
         if self.fc:
             if fc_num==2:
                 self.fc5 = nn.Linear(512*7*7, 256)
@@ -189,7 +196,7 @@ class SimpleResidualBackbone(nn.Module):
                 self.fc5_two = nn.Conv2d(512, 32, bias=False, kernel_size=1)
                 torch.nn.init.xavier_uniform_(self.fc5.weight)
                 torch.nn.init.xavier_uniform_(self.fc5_two.weight)
-            else: # ! 无用
+            else: # ! 无用 -- 论文里好像是共享的 --
                 self.fc5 = nn.Conv2d(512, 32, bias=False, kernel_size=1)
                 torch.nn.init.xavier_uniform_(self.fc5.weight)
                 self.fc5_two = None
@@ -212,7 +219,8 @@ class SimpleResidualBackbone(nn.Module):
         return nn.Sequential(*layers)
 
 
-    def forward(self, x):
+    def forward(self, x, paral=False):
+        B = x.size(0)
         conv1 = self.conv1(x)
         layer1 = self.layer1(conv1)
         if not self.bam1 is None:
@@ -225,24 +233,46 @@ class SimpleResidualBackbone(nn.Module):
         layer3 = self.layer3(conv3)
         if not self.bam3 is None:
             layer3 = self.bam3(layer3)
-        
         if self.ln:
             layer3 = self.ln(layer3)
         
         conv4 = self.conv4(layer3)
         layer4 = self.layer4(conv4)
-        layer4 = layer4.view(layer4.size(0), -1)
+        if self.fc:
+            layer4 = layer4.view(layer4.size(0), -1)
 
-        feature = self.fc5(layer4)
-        if self.norm:
-            feature = torch.nn.functional.normalize(feature, dim=1) # dim默认就是1
-        if self.fc5_two:
-            feature2 = self.fc5_two(layer4)
+        if paral:
+            feature = self.fc5(layer4[:B//2])
+            if self.fc5_two is None:
+                self.fc5_two = self.fc5
+            feature2 = self.fc5_two(layer4[B//2:])
             if self.norm:
-                feature2 = torch.nn.functional.normalize(feature2,dim=1)
+                feature = torch.nn.functional.normalize(feature, dim=1)
+                feature2 = torch.nn.functional.normalize(feature2, dim=1)
+            if self.plugin is not None:
+                s = self.plugin(feature, feature2)
+                # feature = torch.flatten(feature, start_dim=1) # 尝试一下是否可以解决问题 # !
+                # feature2 = torch.flatten(feature2, start_dim=1)
+                return feature, feature2, s
             return feature, feature2
-        # print("backbone device: %d is working"%(torch.cuda.current_device()))
-        return feature
+        else:    
+            feature = self.fc5(layer4)
+            if self.norm:
+                feature = torch.nn.functional.normalize(feature, dim=1) # dim默认就是1
+            elif self.phase == 'test':
+                feature = torch.flatten(feature, start_dim=1) # 尝试一下是否可以解决问题 # !
+            if self.fc5_two:
+                feature2 = self.fc5_two(layer4)
+                if self.norm:
+                    feature2 = torch.nn.functional.normalize(feature2,dim=1)
+                elif self.phase == 'test':
+                    feature2 = torch.flatten(feature2, start_dim=1)    
+            # if self.plugin is not None: #无用
+            #     s = self.plugin(feature[:B//2], feature2[B//2:]) ## ! 要求输入x是concat的数据
+            #     return feature, feature2, s
+                return feature, feature2
+            else:
+                return feature
 
     def forward_split(self, x, split_index=0, pad_direction="up"):
         if pad_direction=="up":
