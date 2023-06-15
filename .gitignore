@@ -9,7 +9,6 @@ snapshot/
 temp_datasets/
 test/
 
-cfgs/
 ! cfgs/am_36_ddp_visualization.py
 ! cfgs/am_36_ddp.py
 ! cfgs/res_50_ddp_pipline.py
@@ -17,6 +16,8 @@ cfgs/
 ! cfgs/res_arc_50_ddp_pipeline.py
 ! cfgs/SR_36_ddp_pipeline.py
 ! cfgs/SR_36_ddp_split_abla_pipeline.py
+cfgs/
+
 
 dataprocess
 ! dataprocess/create*
